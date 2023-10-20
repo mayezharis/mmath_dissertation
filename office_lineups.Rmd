@@ -39,7 +39,7 @@ lineup_resids_o1 %>%
   facet_wrap(~ .sample) +
   labs(title="Lineup 15, Residuals vs. Fitted",
         x ="Fitted values", y = "Residuals")
-suppressMessages(ggsave("LUO1_RvF_wL.png", path = "Mock Lineups/Office Lineup 1 (pos5)"))
+suppressMessages(ggsave("LUO1_RvF_wL.png", path = "Mock Lineups/Office Lineup 1 (pos9)"))
 
 lineup_resids_o1 %>%
   ggplot(aes(x = .fitted, y = .resid)) +
@@ -48,7 +48,7 @@ lineup_resids_o1 %>%
   facet_wrap(~ .sample) +
   labs(title="Lineup 15, Residuals vs. Fitted",
         x ="Fitted values", y = "Residuals")
-suppressMessages(ggsave("LUO1_RvF_woL.png", path = "Mock Lineups/Office Lineup 1 (pos5)"))
+suppressMessages(ggsave("LUO1_RvF_woL.png", path = "Mock Lineups/Office Lineup 1 (pos9)"))
 
 
 
@@ -62,7 +62,7 @@ lineup_resids_o1 %>%
   facet_wrap(~ .sample) +
   labs(title="Lineup 15, Scale-Location",
         x ="Fitted values", y = TeX("$\\sqrt{|standardized\\,\\, residuals|}$"))
-suppressMessages(ggsave("LUO1_SL_wL.png", path = "Mock Lineups/House Lineup 1 (pos5)"))
+suppressMessages(ggsave("LUO1_SL_wL.png", path = "Mock Lineups/House Lineup 1 (pos9)"))
 
 lineup_resids_o1 %>%
   group_by(.sample) %>%
@@ -73,7 +73,64 @@ lineup_resids_o1 %>%
   facet_wrap(~ .sample) +
   labs(title="Lineup 15, Scale-Location",
         x ="Fitted values", y = TeX("$\\sqrt{|standardized\\,\\, residuals|}$"))
-suppressMessages(ggsave("LUO1_SL_woL.png", path = "Mock Lineups/Office Lineup 1 (pos5)"))
+suppressMessages(ggsave("LUO1_SL_woL.png", path = "Mock Lineups/Office Lineup 1 (pos9)"))
+
+```
+
+```{r Lineup 2}
+office_samp2 <- odata %>%
+  select(all_of(c("imdb_rating", "total_votes", "n_lines", "n_words")))
+
+office_mod2 <- imdb_rating ~ total_votes + n_lines
+
+office_fit2 <- lm(office_mod2, data = office_samp2)
+
+aug_sampo2 <- augment(office_fit1)
+lineup_resids_o2 <- lineup(null_lm(office_mod1, method = "boot"), true = aug_sampo2, n=9, pos=5)
+
+lineup_resids_o2 %>%
+  ggplot(aes(x = .fitted, y = .resid)) +
+  geom_hline(yintercept = 0, linetype = 2, color = "black") +
+  geom_point(shape = 1, alpha=0.8) +
+  geom_smooth(col="red", method = "loess", se=FALSE, linewidth = 0.5) +
+  facet_wrap(~ .sample) +
+  labs(title="Lineup 16, Residuals vs. Fitted",
+        x ="Fitted values", y = "Residuals")
+suppressMessages(ggsave("LUO2_RvF_wL.png", path = "Mock Lineups/Office Lineup 2 (pos5)"))
+
+lineup_resids_o2 %>%
+  ggplot(aes(x = .fitted, y = .resid)) +
+  geom_hline(yintercept = 0, linetype = 2, color = "black") +
+  geom_point(shape = 1, alpha=0.8) +
+  facet_wrap(~ .sample) +
+  labs(title="Lineup 16, Residuals vs. Fitted",
+        x ="Fitted values", y = "Residuals")
+suppressMessages(ggsave("LUO2_RvF_woL.png", path = "Mock Lineups/Office Lineup 2 (pos5)"))
+
+
+
+lineup_resids_o2 %>%
+  group_by(.sample) %>%
+  mutate(.std.resid_null = .resid/sd(.resid), 
+         .scale_null = sqrt(abs(.std.resid_null))) %>%
+  ggplot(aes(x = .fitted, y = .scale_null)) +
+  geom_point(shape = 1, alpha=0.8, ) +
+  geom_smooth(col="red", method = "loess", se=FALSE, linewidth = 0.5) +
+  facet_wrap(~ .sample) +
+  labs(title="Lineup 16, Scale-Location",
+        x ="Fitted values", y = TeX("$\\sqrt{|standardized\\,\\, residuals|}$"))
+suppressMessages(ggsave("LUO2_SL_wL.png", path = "Mock Lineups/House Lineup 2 (pos5)"))
+
+lineup_resids_o2 %>%
+  group_by(.sample) %>%
+  mutate(.std.resid_null = .resid/sd(.resid), 
+         .scale_null = sqrt(abs(.std.resid_null))) %>%
+  ggplot(aes(x = .fitted, y = .scale_null)) +
+  geom_point(shape = 1, alpha=0.8, ) +
+  facet_wrap(~ .sample) +
+  labs(title="Lineup 16, Scale-Location",
+        x ="Fitted values", y = TeX("$\\sqrt{|standardized\\,\\, residuals|}$"))
+suppressMessages(ggsave("LUO2_SL_woL.png", path = "Mock Lineups/Office Lineup 2 (pos5)"))
 
 ```
 
