@@ -18,12 +18,14 @@ ui <- fluidPage(
     # Sidebar with a slider input for number of bins 
     sidebarLayout(
         sidebarPanel(
-            sliderInput("bins",
-                        "Number of bins:",
-                        min = 1,
-                        max = 50,
-                        value = 30)
-        ),
+          selectInput("y_var", "Y Variable:", c("Age (in years)" = "age",
+                                                            "Female" = "gender",
+                                                            "BMI" = "bmi",
+                                                            "Uniform, U(0,1)" = "U")),
+          
+          selectInput("n", "Sample Size:", c("n=10" = "small",
+                                             "n=100" = "med",
+                                             "n=1000" = "large")),
 
         # Show a plot of the generated distribution
         mainPanel(
@@ -49,3 +51,4 @@ server <- function(input, output) {
 
 # Run the application 
 shinyApp(ui = ui, server = server)
+0

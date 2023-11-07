@@ -154,6 +154,13 @@ nonfactor_list2 <- c("age")
 ```
 
 
+```{r export dataset lol}
+
+write.csv(data, "share_data.csv", row.names=FALSE)
+
+```
+
+
 ## Lineups
 
 

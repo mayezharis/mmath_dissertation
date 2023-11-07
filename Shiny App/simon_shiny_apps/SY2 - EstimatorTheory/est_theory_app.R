@@ -12,12 +12,13 @@
 
 library(shiny)
 
+data <- read.csv("share_data")
+
 # Define UI for application that draws a histogram
 ui <- fluidPage(
-
-
+  
     # Application title
-    titlePanel(withMathJax("Sample Mean Estimator, \\(\\bar{X} = \\frac{1}{n}\\sum_{i=1}^n X_i\\), for i.i.d. Samples From the Population Distribution.")),
+    titlePanel(withMathJax("Diagnostic Plots.")),
 
     h4(withMathJax("This app illustrates the principal of repeated sampling and unbiaseness of the sample mean estimator, 
                    \\(\\bar{X}\\), for the population expectation parameter \\(\\mu\\). In reality, we can only ever have a 
@@ -31,9 +32,9 @@ ui <- fluidPage(
         sidebarPanel(
             
             
-            selectInput("Dist", "Population Distribution:", c("Normal, N(0,1)" = "N",
-                                                  "Binomial, Bin(10,1/3)" = "B",
-                                                  "Exponential, Exp(1)" = "E",
+            selectInput("y_var", "Y Variable:", c("Age" = "age",
+                                                  "BMI" = "bmi",
+                                                  "Gender" = "female",
                                                   "Uniform, U(0,1)" = "U")),
             
             selectInput("n", "Sample Size:", c("n=10" = "small",
