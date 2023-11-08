@@ -11,6 +11,8 @@ suppressPackageStartupMessages(library("nullabor"))
 suppressPackageStartupMessages(library("ggthemes"))
 suppressPackageStartupMessages(library("broom"))
 suppressPackageStartupMessages(library("latex2exp"))
+suppressPackageStartupMessages(library("reshape2"))
+
 ```
 
 ```{r Load-data}
@@ -154,14 +156,34 @@ nonfactor_list2 <- c("age")
 ```
 
 ```{r cut data}
-summary(data$country_mod)
+data$country_mod <- factor(data$country_mod)
+data$wave <- factor(data$wave)
+
+print(table(data$country_mod, data$wave)[,]) 
+# print(summary(data$country_mod))
+
+# Austria, Belgium, Denmark, France, Germany, Italy, Spain, Sweden, Switzerland
 ```
+
+```{r}
+final_data <- data %>%
+  filter(wave %in% c(5)) %>%
+  filter(country_mod %in% c("Austria", "Belgium", "Denmark", "France", "Germany", 
+                            "Italy", "Spain", "Sweden", "Switzerland")) %>%
+  select(all_of(c(factor_list, ordered_list, nonfactor_list)), "bmi")
+```
+
+```{r}
+# summary(final_data)
+```
+
+
 
 
 
 ```{r export dataset}
 
-save(data, file = "share_data.csv")
+save(final_data, file = "share_data.csv")
 
 ```
 

@@ -12,7 +12,7 @@
 
 library(shiny)
 
-data <- read.csv("share_data")
+data <- read.csv("Shiny App/diag_plots/share_data.csv")
 
 # Define UI for application that draws a histogram
 ui <- fluidPage(
