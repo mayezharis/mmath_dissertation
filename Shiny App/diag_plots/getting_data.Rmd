@@ -183,7 +183,9 @@ final_data <- data %>%
 
 ```{r export dataset}
 
-save(final_data, file = "share_data.csv")
+# save(final_data, file = "share_data.csv")
+
+write.csv(final_data, "C:/Users/mayez/OneDrive - University of Edinburgh/Year 5/Dissertation/Code/mmath_dissertation/Shiny App/diag_plots/share_data.csv", row.names=FALSE)
 
 ```
 

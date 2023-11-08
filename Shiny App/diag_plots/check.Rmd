@@ -1,4 +1,50 @@
 ```{r}
-check_data <- read.csv("share_data.csv")
+knitr::opts_chunk$set(echo = FALSE)
+suppressPackageStartupMessages(library("tidyverse"))
+suppressPackageStartupMessages(library("dplyr"))
+suppressPackageStartupMessages(library("gridExtra"))
+suppressPackageStartupMessages(library("visdat"))
+suppressPackageStartupMessages(library("countrycode"))
+suppressPackageStartupMessages(library("ggplot2"))
+suppressPackageStartupMessages(library("knitr"))
+suppressPackageStartupMessages(library("nullabor"))
+suppressPackageStartupMessages(library("ggthemes"))
+suppressPackageStartupMessages(library("broom"))
+suppressPackageStartupMessages(library("latex2exp"))
+suppressPackageStartupMessages(library("reshape2"))
+suppressPackageStartupMessages(library("readxl"))
 ```
+
+```{r}
+supply_chain_pricing <- read.csv("C:/Users/mayez/OneDrive - University of Edinburgh/Year 5/Dissertation/Code/mmath_dissertation/Shiny App/Datasets/supply_chain_pricing.csv")
+summary(supply_chain_pricing)
+```
+
+```{r}
+air_quality <- read.csv("C:/Users/mayez/OneDrive - University of Edinburgh/Year 5/Dissertation/Code/mmath_dissertation/Shiny App/Datasets/Air_Quality.csv")
+summary(air_quality)
+```
+
+
+```{r}
+warehouse_data <- read.csv("C:/Users/mayez/OneDrive - University of Edinburgh/Year 5/Dissertation/Code/mmath_dissertation/Shiny App/Datasets/warehouse_data.csv")
+summary(warehouse_data)
+```
+
+```{r}
+jobs_data <- read.csv("C:/Users/mayez/OneDrive - University of Edinburgh/Year 5/Dissertation/Code/mmath_dissertation/Shiny App/Datasets/nyc_jobs.csv")
+summary(jobs_data)
+```
+
+```{r}
+crime_data <- read_excel("C:/Users/mayez/OneDrive - University of Edinburgh/Year 5/Dissertation/Code/mmath_dissertation/Shiny App/Datasets/violent_crime.xlsx")
+crime_data <- na.omit(crime_data)
+```
+
+
+```{r THIS IS THE ONE}
+news_data <- read_csv("C:/Users/mayez/OneDrive - University of Edinburgh/Year 5/Dissertation/Code/mmath_dissertation/Shiny App/Datasets/OnlineNewsPopularity.csv")
+news_data <- na.omit(news_data)
+```
+
 
