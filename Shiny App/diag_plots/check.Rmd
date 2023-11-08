@@ -49,6 +49,13 @@ summary(news_data)
 ```
 
 ```{r}
+list_of_vars <- c("shares", "n_tokens_title", "n_tokens_content", "n_unique_tokens", "num_hrefs", "num_imgs", "num_videos", "average_token_length")
+
+news_data <- news_data %>%
+  filter(n_tokens_content < 8474) %>% 
+  filter(n_unique_tokens < 701) %>%
+  select(all_of(list_of_vars))
+
 
 ```
 

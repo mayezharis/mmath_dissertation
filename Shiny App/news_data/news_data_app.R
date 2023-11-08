@@ -9,6 +9,15 @@
 
 news_data <- read.csv("C:/Users/mayez/OneDrive - University of Edinburgh/Year 5/Dissertation/Code/mmath_dissertation/Shiny App/Datasets/OnlineNewsPopularity.csv")
 
+list_of_vars <- c("shares", "n_tokens_title", "n_tokens_content", "n_unique_tokens", "num_hrefs", "num_imgs", "num_videos", "average_token_length")
+
+news_data <- news_data %>%
+  filter(n_tokens_content < 8474) %>% 
+  filter(n_unique_tokens < 701) %>%
+  select(all_of(list_of_vars))
+
+
+
 library(shiny)
 library(shinyjs)
 library(rhandsontable)
@@ -16,95 +25,47 @@ library(shinycssloaders)
 # library(shinythemes)
 
 # Define UI for application that draws a histogram
-ui <- navbarPage(
-  "Model Diagnostics",
-  fluid = TRUE,
-  tabPanel(
-    "Enter data",
-    useShinyjs(),
-    fluidRow(
-      
-      column(4,
-             selectInput("y_var", "Y Variable:", c("No. of shares" =  "shares",
-                                                   "No. of words in title" = "n_tokens_title",
-                                                   "No. of words in text" = "n_tokens",
-                                                   "No. of unique words in text" = "n_unique_tokens",
-                                                   "No. of vinks" = "num_hrefs",
-                                                   "No. of vmages" = "num_imgs",
-                                                   "No. of videos" = "num_videos",
-                                                   "Average word length" = "average_token_length")),
-             selectInput("x_var", "X Variable:", c("No. of shares" =  "shares",
-                                                   "No. of words in title" = "n_tokens_title",
-                                                   "No. of words in text" = "n_tokens",
-                                                   "No. of unique words in text" = "n_unique_tokens",
-                                                   "No. of vinks" = "num_hrefs",
-                                                   "No. of vmages" = "num_imgs",
-                                                   "No. of videos" = "num_videos",
-                                                   "Average word length" = "average_token_length")),
-
-      )
-    )
-  ),
-  
-  column(8,
-         withSpinner(plotOutput("fittedLine")),
-         verbatimTextOutput("DF"),
-         br(),
-         tableOutput("fittedEqn")
-  ),
-  
-  
-  tabPanel(
-    "Observed plot",
+ui <- 
+  fluidPage(
+    h1("Model Diagnostics"),
     sidebarLayout(
       sidebarPanel(
+        selectInput("y_var", "Y Variable:", c("No. of shares" =  "shares",
+                                              "No. of words in title" = "n_tokens_title",
+                                              "No. of words in text" = "n_tokens_content",
+                                              "No. of unique words in text" = "n_unique_tokens",
+                                              "No. of vinks" = "num_hrefs",
+                                              "No. of vmages" = "num_imgs",
+                                              "No. of videos" = "num_videos",
+                                              "Average word length" = "average_token_length")),
+        selectInput("x_var", "X Variable:", c("No. of shares" =  "shares",
+                                              "No. of words in title" = "n_tokens_title",
+                                              "No. of words in text" = "n_tokens_content",
+                                              "No. of unique words in text" = "n_unique_tokens",
+                                              "No. of vinks" = "num_hrefs",
+                                              "No. of vmages" = "num_imgs",
+                                              "No. of videos" = "num_videos",
+                                              "Average word length" = "average_token_length")),
         radioButtons("plot", label = h4("Type of residual plot"),
                      c("Residuals vs. fitted values" = "resid.fitted",
-                       "Residuals vs. x" = "resid.x", 
-                       "Normal Q-Q plot" = "qq"), 
+                       "Residuals vs. x" = "resid.x",
+                       "Normal Q-Q plot" = "qq"),
                      selected = "resid.fitted")
-      ),
-      mainPanel(
-        plotOutput("origPlot")
-      )
+          ),
+    mainPanel("main_panel",
+              column(2,
+                     fluidRow(
+                       splitLayout(cellWidths = c("50%", "50%"), 
+                                   withSpinner(plotOutput("fittedLine")), 
+                                   withSpinner(plotOutput("origPlot"))
+                                   )
+                       )
+                     )
+              )
     )
-    
-  )
-)
+    )
 
-
-# ),
-# sidebarPanel(
-#   selectInput("y_var", "Y Variable:", c("Age (in years)" = "age",
-#                                                     "Gender" = "female",
-#                                                     "BMI" = "bmi",
-#                                                     "Education Level" = "isced1997_r")),
-#   
-#   conditionalPanel(condition = "input.y_var == 'age'",
-#                    selectInput("x_var", "X Variable:", c("Gender" = "female",
-#                                                          "BMI" = "bmi",
-#                                                          "Education Level" = "isced1997_r"))),
-#   conditionalPanel(condition = "input.y_var == 'female'",
-#                    selectInput("x_var", "X Variable:", c("Age (in years)" = "age",
-#                                                          "BMI" = "bmi",
-#                                                          "Education Level" = "isced1997_r"))),
-#   conditionalPanel(condition = "input.y_var == 'bmi'",
-#                    selectInput("x_var", "X Variable:", c("Age (in years)" = "age",
-#                                                          "Gender" = "female",
-#                                                          "Education Level" = "isced1997_r"))),
-#   conditionalPanel(condition = "input.y_var == 'isced1997_r'",
-#                    selectInput("x_var", "X Variable:", c("Age (in years)" = "age",
-#                                                          "Gender" = "female",
-#                                                          "BMI" = "bmi"))),
-#   actionButton("run", "Re-sample data"),
-# ),
-# # Show a plot of the generated distribution
-# mainPanel(
-#    plotOutput("diagnostic_plots, height = 1000px")
-#         )
-#     )
-# )
-
+  
 
 # Define server logic required to draw a histogram
 server <- function(input, output, session) {
