@@ -7,7 +7,7 @@
 #    http://shiny.rstudio.com/
 #
 
-share_data <- read.csv("C:/Users/mayez/OneDrive - University of Edinburgh/Year 5/Dissertation/Code/mmath_dissertation/Shiny App/diag_plots/share_data.csv")
+news_data <- read.csv("C:/Users/mayez/OneDrive - University of Edinburgh/Year 5/Dissertation/Code/mmath_dissertation/Shiny App/Datasets/OnlineNewsPopularity.csv")
 
 library(shiny)
 library(shinyjs)
@@ -25,14 +25,23 @@ ui <- navbarPage(
     fluidRow(
       
       column(4,
-             selectInput("y_var", "Y Variable:", c("Age (in years)" = "age",
-                                                   "Gender" = "female",
-                                                   "BMI" = "bmi",
-                                                   "Education Level" = "isced1997_r")),
-             selectInput("x_var", "X Variable:", c("Age (in years)" = "age",
-                                                   "Gender" = "female",
-                                                   "BMI" = "bmi",
-                                                   "Education Level" = "isced1997_r"))
+             selectInput("y_var", "Y Variable:", c("No. of shares" =  "shares",
+                                                   "No. of words in title" = "n_tokens_title",
+                                                   "No. of words in text" = "n_tokens",
+                                                   "No. of unique words in text" = "n_unique_tokens",
+                                                   "No. of vinks" = "num_hrefs",
+                                                   "No. of vmages" = "num_imgs",
+                                                   "No. of videos" = "num_videos",
+                                                   "Average word length" = "average_token_length")),
+             selectInput("x_var", "X Variable:", c("No. of shares" =  "shares",
+                                                   "No. of words in title" = "n_tokens_title",
+                                                   "No. of words in text" = "n_tokens",
+                                                   "No. of unique words in text" = "n_unique_tokens",
+                                                   "No. of vinks" = "num_hrefs",
+                                                   "No. of vmages" = "num_imgs",
+                                                   "No. of videos" = "num_videos",
+                                                   "Average word length" = "average_token_length")),
+
       )
     )
   ),
@@ -102,7 +111,7 @@ server <- function(input, output, session) {
   
   rv <- reactiveValues(show = FALSE)
   
-  reg_data <- reactive({share_data[, c(input$x_var, input$y_var)]
+  reg_data <- reactive({news_data[, c(input$x_var, input$y_var)]
   })
   
   mod <- reactive({

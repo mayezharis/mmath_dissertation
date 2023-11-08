@@ -45,6 +45,12 @@ crime_data <- na.omit(crime_data)
 ```{r THIS IS THE ONE}
 news_data <- read_csv("C:/Users/mayez/OneDrive - University of Edinburgh/Year 5/Dissertation/Code/mmath_dissertation/Shiny App/Datasets/OnlineNewsPopularity.csv")
 news_data <- na.omit(news_data)
+summary(news_data)
 ```
+
+```{r}
+
+```
+
 
 
