@@ -8,8 +8,8 @@
 #
 
 list_of_vars_n <- c("shares", "n_tokens_title", "n_tokens_content", 
-                  "n_unique_tokens", "num_hrefs", "num_imgs", 
-                  "num_videos", "average_token_length")
+                    "n_unique_tokens", "num_hrefs", "num_imgs", 
+                    "num_videos", "average_token_length")
 
 n_data_choices <- c("No. of shares" =  "shares",
                     "No. of words in title" = "n_tokens_title",
@@ -77,11 +77,11 @@ ui <-
         selectInput(inputId = "y_var",
                     label = "Y Variable:",
                     choices = e_data_y_choices),
-
+        
         selectInput(inputId = "x_var",
                     label = "X Variable:",
                     choices = e_data_x_choices),
-
+        
         # selectInput(inputId = "y_var",
         #             label = "Y Variable:",
         #             choices = n_data_choices),
@@ -94,7 +94,7 @@ ui <-
                     min = 500,
                     max = 5000, 
                     value = 1000),
-
+        
         # selectInput("sample_size", "Select Sample Size:",
         #             choices = c(500, 1000, 2500, 5000),
         #             selected = 1000),
@@ -112,17 +112,17 @@ ui <-
                                  "Show data only" = "woRL")),
         
         actionButton("resample", "Generate new sample")
-  ),
-  mainPanel(fluidRow(
-    splitLayout(cellWidths = c("50%", "50%"),
-                withSpinner(plotOutput("fittedLine")),
-                withSpinner(plotOutput("origPlot")))
+      ),
+      mainPanel(fluidRow(
+        splitLayout(cellWidths = c("50%", "50%"),
+                    withSpinner(plotOutput("fittedLine")),
+                    withSpinner(plotOutput("origPlot")))
+      )
+      )
     )
-    )
-  )
   )
 
-  
+
 
 # Define server logic required to draw a histogram
 server <- function(input, output, session) {
@@ -133,7 +133,7 @@ server <- function(input, output, session) {
   # NEWS DATA
   # data <- read.csv("C:/Users/mayez/OneDrive - University of Edinburgh/Year 5/Dissertation/Code/mmath_dissertation/Shiny App/Datasets/news_data_cleaned.csv")
   
-
+  
   reg_data <- reactive({
     if (input$resample >= 0) {
       data_sample <- sample_n(data, as.numeric(input$sample_size))
@@ -186,7 +186,7 @@ server <- function(input, output, session) {
                               labs(title = "Residuals vs. Fitted",
                                    x = "Fitted values",
                                    y = "Residuals")
-                            ),
+      ),
       
       scale.location = switch(input$plot_options,
                               wRL = obsData %>% ggplot(aes(x = .fitted, y = sqrt(abs((.resid-mean(.resid))/sd(.resid))))) +
@@ -209,16 +209,16 @@ server <- function(input, output, session) {
                                 labs(title= "Scale-Location",
                                      x ="Fitted values",
                                      y = TeX("$\\sqrt{|standardized\\,\\, residuals|}$"))
-                              ),
-                        
-                       qq = obsData %>%
-                         ggplot(aes(sample = .std.resid)) +
-                         geom_qq_line() +
-                         geom_qq() +
-                         labs(title = "Normal Q-Q Plot", x = "N(0, 1) quantiles", y = "Standardized residuals"))
-                       dataPlot
-    })
-  }
+      ),
+      
+      qq = obsData %>%
+        ggplot(aes(sample = .std.resid)) +
+        geom_qq_line() +
+        geom_qq() +
+        labs(title = "Normal Q-Q Plot", x = "N(0, 1) quantiles", y = "Standardized residuals"))
+    dataPlot
+  })
+}
 
 # Run the application 
 shinyApp(ui = ui, server = server)

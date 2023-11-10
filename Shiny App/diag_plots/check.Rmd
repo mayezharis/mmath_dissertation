@@ -100,7 +100,7 @@ e_data_sample <- sample_n(e_data %>% select(all_of(list_of_vars_e)), 500)
 
 # 
 # 
-# fit <- lm(shares ~ n_tokens_content, data = e_data_sample)
+# fit <- lm(Total ~ n_tokens_content, data = e_data_sample)
 # plot(fit)
 ```
 
